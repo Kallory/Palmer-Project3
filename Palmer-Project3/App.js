@@ -11,7 +11,9 @@ import {
 export default class App extends Component {
     state = {
         results: '',
+        listResults: [],
     };
+    
 
     onLoad = async (grade) => {
         this.setState({ results: 'Loading, please wait...' });
@@ -21,17 +23,19 @@ export default class App extends Component {
                 method: 'GET',
             });
         const results = await response.text();
-        this.setState({ results });
+        const listResults = JSON.parse(results);
+        console.log(listResults); // Check if listResults is an array
+        this.setState({ listResults });
     }
 
     render() {
-        const { results } = this.state;
+        const { results, listResults } = this.state;
         return (
             <View style={styles.container}>
                 <ScrollView>
                     <TextInput
                         style={styles.preview}
-                        value={results}
+                        value={listResults.join('\n')}
                         placeholder="Results..."
                         editable={false}
                         multiline
